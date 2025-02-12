@@ -1,7 +1,18 @@
 "use client";
+
+import { registerUser } from "@/utils/api";
+
 const Form = () => {
   async function submitAction(formData) {
-    console.log("Submitted Data:", Object.fromEntries(formData));
+    try {
+      const formdata = Object.fromEntries(formData);
+      console.log(formdata)
+      const data = await registerUser(formdata);
+      console.log(data);
+      alert("Registration Successful!");
+    } catch (error) {
+      alert(error.response?.data?.message || "Registration Failed");
+    }
   }
   return (
     <div>
