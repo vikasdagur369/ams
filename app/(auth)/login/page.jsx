@@ -1,6 +1,7 @@
 "use client";
 
 import { loginAction } from "@/actions";
+import Link from "next/link";
 import { useActionState } from "react";
 
 const page = () => {
@@ -87,12 +88,12 @@ const page = () => {
             <div className="text-center">
               <p className="text-sm text-gray-600">
                 Don't have an account?
-                <a
-                  href="#"
+                <Link
+                  href={"/signup"}
                   className="font-medium text-teal-600 hover:text-teal-500"
                 >
-                  Sign up
-                </a>
+                  SignUp
+                </Link>
               </p>
             </div>
             {resData.message && (

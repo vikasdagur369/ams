@@ -54,10 +54,6 @@ export const signUpAction = async (prevState, formData) => {
 // login-action
 //====================================================================================================
 
-
-
-
-
 export const loginAction = async (prevState, formData) => {
   try {
     const rawFormData = {
@@ -76,11 +72,9 @@ export const loginAction = async (prevState, formData) => {
       rawFormData.password === process.env.ADMIN_PASSWORD
     ) {
       // Generate an Admin token
-      const token = jwt.sign(
-        { role: "admin" },
-        process.env.JWT_SECRET,
-        { expiresIn: "7d" }
-      );
+      const token = jwt.sign({ role: "admin" }, process.env.JWT_SECRET, {
+        expiresIn: "7d",
+      });
 
       // Set admin token in HttpOnly Cookie
       cookies().set("token", token, {
@@ -97,13 +91,13 @@ export const loginAction = async (prevState, formData) => {
     const user = await User.findOne({ email: rawFormData.userId });
 
     if (!user) {
-      return { message: "Invalid credentials!" };
+      return { message: "Invalid userId!" };
     }
 
     // Check password
     const isMatch = await bcrypt.compare(rawFormData.password, user.password);
     if (!isMatch) {
-      return { message: "Invalid credentials!" };
+      return { message: "Invalid password!" };
     }
 
     // Check if user is verified
@@ -127,10 +121,8 @@ export const loginAction = async (prevState, formData) => {
 
     // Redirect to home page after login
     redirect("/");
-
   } catch (error) {
     console.error("Login error:", error);
     return { message: "Server error. Try again later." };
   }
 };
-
