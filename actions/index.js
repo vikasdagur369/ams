@@ -55,38 +55,39 @@ export const signUpAction = async (prevState, formData) => {
 //====================================================================================================
 
 export const loginAction = async (prevState, formData) => {
+  const rawFormData = {
+    userId: formData.get("userId"),
+    password: formData.get("password"),
+  };
+
+  // Validate input fields
+  if (!rawFormData.userId || !rawFormData.password) {
+    return { message: "All fields are required!" };
+  }
+
+  // Check if the user is Admin
+  if (
+    rawFormData.userId === process.env.ADMIN_USERID &&
+    rawFormData.password === process.env.ADMIN_PASSWORD
+  ) {
+    // Generate an Admin token
+    const token = jwt.sign({ role: "admin" }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
+    console.log(token);
+
+    // Store cookies() in a variable & await before setting
+    const cookieStore = await cookies();
+    cookieStore.set("token", token, {
+      httpOnly: true,
+      maxAge: 1 * 24 * 60 * 60, // 1 days
+      path: "/",
+    });
+    
+
+    redirect("/admin");
+  }
   try {
-    const rawFormData = {
-      userId: formData.get("userId"),
-      password: formData.get("password"),
-    };
-
-    // Validate input fields
-    if (!rawFormData.userId || !rawFormData.password) {
-      return { message: "All fields are required!" };
-    }
-
-    // Check if the user is Admin
-    if (
-      rawFormData.userId === process.env.ADMIN_USERID &&
-      rawFormData.password === process.env.ADMIN_PASSWORD
-    ) {
-      // Generate an Admin token
-      const token = jwt.sign({ role: "admin" }, process.env.JWT_SECRET, {
-        expiresIn: "7d",
-      });
-
-      // Set admin token in HttpOnly Cookie
-      cookies().set("token", token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        maxAge: 7 * 24 * 60 * 60, // 7 days
-        path: "/",
-      });
-
-      redirect("/admin");
-    }
-
     // Find the user by email or student ID
     const user = await User.findOne({ email: rawFormData.userId });
 
@@ -112,17 +113,16 @@ export const loginAction = async (prevState, formData) => {
       { expiresIn: "7d" }
     );
 
-    // Set token in HttpOnly Cookie
-    cookies().set("token", token, {
+    // Store cookies() in a variable & await before setting
+    const cookieStore = await cookies();
+    cookieStore.set("token", token, {
       httpOnly: true,
       maxAge: 7 * 24 * 60 * 60, // 7 days
       path: "/",
     });
-
-    // Redirect to home page after login
-    redirect("/");
   } catch (error) {
     console.error("Login error:", error);
     return { message: "Server error. Try again later." };
   }
+  redirect("/");
 };

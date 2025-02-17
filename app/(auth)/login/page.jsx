@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useActionState } from "react";
 
 const page = () => {
-  const [resData, updatedAction] = useActionState(loginAction, { message: "" });
+  const [resData, updatedAction] = useActionState(loginAction, { message:""});
 
   return (
     <div>
