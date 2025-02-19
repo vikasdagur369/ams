@@ -2,6 +2,8 @@
 
 import connectDB from "@/lib/db";
 import User from "@/models/User";
+import jwt from "jsonwebtoken";
+
 
 connectDB();
 
@@ -69,5 +71,33 @@ export const approveUser = async (userId) => {
   } catch (error) {
     console.error("Approve user error:", error);
     return { success: false, message: "Server error. Try again later." };
+  }
+};
+// -----------------------------------fetch Posts-----------------------------------------------
+
+
+
+export const fetchUnverifiedPosts = async (token) => {
+  try {
+    if (!token) {
+      return { message: "Unauthorized! No token provided." };
+    }
+
+    // Verify and decode the token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const { userId, role } = decoded; // Extract user role
+
+    // Check if the user is an admin
+    if (role !== "admin") {
+      return { message: "Access denied! Only admins can fetch unverified posts." };
+    }
+
+    // Fetch all unverified posts and populate the user details (name & email)
+    const unverifiedPosts = await Posts.find({ verified: false }).populate("user", "name email");
+
+    return { unverifiedPosts };
+  } catch (error) {
+    console.error("Error fetching unverified posts:", error);
+    return { message: "Error fetching unverified posts." };
   }
 };

@@ -80,10 +80,9 @@ export const loginAction = async (prevState, formData) => {
     const cookieStore = await cookies();
     cookieStore.set("token", token, {
       httpOnly: true,
-      maxAge: 1 * 24 * 60 * 60, // 1 days
+      maxAge: 60 * 60, // 1 days
       path: "/",
     });
-    
 
     redirect("/admin");
   }
@@ -108,7 +107,7 @@ export const loginAction = async (prevState, formData) => {
 
     // Generate JWT Token
     const token = jwt.sign(
-      { id: user._id, email: user.email, role: user.role },
+      { id: user._id, email: user.email, role: user.role, name: user.name },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
@@ -117,7 +116,7 @@ export const loginAction = async (prevState, formData) => {
     const cookieStore = await cookies();
     cookieStore.set("token", token, {
       httpOnly: true,
-      maxAge: 7 * 24 * 60 * 60, // 7 days
+      maxAge: 60 * 60, // 7 days
       path: "/",
     });
   } catch (error) {
