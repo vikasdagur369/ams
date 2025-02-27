@@ -3,12 +3,10 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useActionState, useState } from "react";
+import {  useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
-import { SavePost } from "@/actions/postActions";
 
 export default function HomePage() {
-  const [resData, upDatedAction] = useActionState(SavePost, { message: "" });
 
   const [posts, setPosts] = useState([
     { id: 1, user: "John Doe", content: "Excited to join HCSTsync!" },
@@ -19,8 +17,6 @@ export default function HomePage() {
     },
   ]);
 
-  const res = SavePost();
-  console.log(res);
   return (
     <div className="flex min-h-screen bg-gray-100">
       {/* Sidebar */}
@@ -48,7 +44,7 @@ export default function HomePage() {
         {/* Post Input */}
         <Card className="mb-4 p-4">
           <CardContent>
-            <form action={upDatedAction} className="flex gap-2">
+            <form action={""} className="flex gap-2">
               <FaUserCircle size={40} className="text-gray-500" />
               <Input
                 id="data"
@@ -57,7 +53,6 @@ export default function HomePage() {
                 className="flex-grow"
               />
               <Button type="submit">Post</Button>
-              {resData && <div>{resData.message}</div>}
             </form>
           </CardContent>
         </Card>
