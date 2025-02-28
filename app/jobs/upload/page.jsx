@@ -7,6 +7,7 @@ const JobUploadPage = () => {
   const [resData, updatedAction] = useActionState(jobUploadAction, {
     message: "",
   });
+
   return (
     <div className="min-h-screen flex items-center justify-center">
       <form
