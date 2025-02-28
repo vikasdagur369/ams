@@ -14,6 +14,10 @@ const JobSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    Link: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );

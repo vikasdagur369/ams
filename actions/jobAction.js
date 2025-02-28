@@ -14,6 +14,7 @@ export const jobUploadAction = async (prevData, formData) => {
       companyName: formData.get("CompanyName"),
       role: formData.get("role"),
       salary: formData.get("salery"),
+      link: formData.get("link"),
     };
 
     console.log(rawFormData);
@@ -26,6 +27,7 @@ export const jobUploadAction = async (prevData, formData) => {
       CompanyName: rawFormData.companyName,
       Role: rawFormData.role,
       Salery: rawFormData.salary,
+      Link: rawFormData.link,
     });
 
     console.log(newJob);
@@ -55,3 +57,19 @@ export const fetchJobs = async () => {
   }
 };
 
+// ------------------------fetch job by id ------------------------------------------------
+export const fetchJobById = async (id) => {
+  try {
+    const job = await Jobs.findById(id);
+    return {
+      compName: job.CompanyName,
+      role: job.Role,
+      salary: job.Salery,
+      link: job.Link,
+      id: job._id,
+    };
+  } catch (error) {
+    console.error("Error fetching job:", error);
+    return null;
+  }
+};

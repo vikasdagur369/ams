@@ -30,7 +30,10 @@ const Jobpage = () => {
               <h2 className="text-lg font-semibold">{job.compName}</h2>
               <p className="text-gray-600">Role: {job.role}</p>
               <p className="text-gray-600">Salary: {job.salary}</p>
-              <Button>Apply</Button>
+
+              <Link href={`/jobs/${job.id}`}>
+                <Button>Apply</Button>
+              </Link>
             </div>
           ))
         ) : (
