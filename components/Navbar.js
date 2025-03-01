@@ -23,7 +23,10 @@ const Navbar = () => {
           <Link href="/" className="hover:text-blue-400 transition">
             Home
           </Link>
-          <Link href="/yearbook" className="hover:text-blue-400 transition">
+          <Link
+            href="/alumni/yearbook"
+            className="hover:text-blue-400 transition"
+          >
             YearBook
           </Link>
           <Link href="/gallery" className="hover:text-blue-400 transition">
